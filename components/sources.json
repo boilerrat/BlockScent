@@ -11,7 +11,26 @@
         {
             "name": "Coin Journal",
             "url": "https://coinjournal.net/news/feed/"
+        },
+        {
+            "name": "Bitcoin.com News",
+            "url": "https://news.bitcoin.com/rss"
+        },
+        {
+            "name": "NewsBTC",
+            "url": "https://www.newsbtc.com/feed/"
+        },
+        {
+            "name": "Beincrypto",
+            "url": "https://beincrypto.com/feed/"
+        },
+        {
+            "name": "Daily Hodl",
+            "url": "https://dailyhodl.com/feed/"
+        },
+        {
+            "name": "The Defiant",
+            "url": "https://thedifant.io/feed/"
         }
-
     ]
 }
