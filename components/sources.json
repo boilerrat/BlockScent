@@ -1,0 +1,17 @@
+{
+    "sources": [
+        {
+            "name": "CoinTelegraph",
+            "url": "https://cointelegraph.com/rss"
+        },
+        {
+            "name": "Coindesk",
+            "url": "https://www.coindesk.com/arc/outboundfeeds/rss/"
+        },
+        {
+            "name": "Coin Journal",
+            "url": "https://coinjournal.net/news/feed/"
+        }
+
+    ]
+}
