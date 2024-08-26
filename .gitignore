@@ -1,0 +1,59 @@
+# Ignore Python bytecode files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Ignore environment variables and configuration files
+.env
+
+# Ignore virtual environment directories
+venv/
+env/
+.venv/
+.env/
+
+# Ignore Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Ignore logs and temporary files
+*.log
+*.tmp
+*.swp
+*.swo
+*.bak
+
+# Ignore database files
+*.sqlite3
+*.db
+
+# Ignore compiled Python files
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+*.pyd
+
+# Ignore MacOS specific files
+.DS_Store
+
+# Ignore VSCode workspace settings
+.vscode/
+
+# Ignore JetBrains IDE project files
+.idea/
+
+# Ignore test coverage results
+htmlcov/
+*.cover
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+
+# Ignore pyenv files
+.python-version
+
+# Ignore other potentially sensitive files
+credentials/
