@@ -1,35 +1,87 @@
 {
     "sources": [
         {
-            "name": "CoinTelegraph",
-            "url": "https://cointelegraph.com/rss"
-        },
-        {
-            "name": "Coindesk",
-            "url": "https://www.coindesk.com/arc/outboundfeeds/rss/"
-        },
-        {
-            "name": "Coin Journal",
-            "url": "https://coinjournal.net/news/feed/"
-        },
-        {
-            "name": "Bitcoin.com News",
-            "url": "https://news.bitcoin.com/rss"
-        },
-        {
-            "name": "NewsBTC",
-            "url": "https://www.newsbtc.com/feed/"
+            "name": "ambcrypto",
+            "url": "https://ambcrypto.com/feed/"
         },
         {
             "name": "Beincrypto",
             "url": "https://beincrypto.com/feed/"
         },
         {
-            "name": "Daily Hodl",
+            "name": "Bitcoin.com News",
+            "url": "https://news.bitcoin.com/rss"
+        },
+        {
+            "name": "bitcoinist",
+            "url": "https://bitcoinist.com/feed/"
+        },
+        {
+            "name": "Coin-Journal",
+            "url": "https://coinjournal.net/news/feed/"
+        },
+        {
+            "name": "Coindesk",
+            "url": "https://www.coindesk.com/arc/outboundfeeds/rss/"
+        },
+        {
+            "name": "CoinGabbar",
+            "url": "https://www.coingabbar.com/cryptocurrencyEnglishNewsRssFeed"
+        },
+        {
+            "name": "Coinpedia",
+            "url": "https://coinpedia.org/feed/"
+        },
+        {
+            "name": "CoinTelegraph",
+            "url": "https://cointelegraph.com/rss"
+        },
+        {
+            "name": "Crypto-Economist",
+            "url": "https://en.cryptonomist.ch/feed/"
+        },
+        {
+            "name": "crypto-economy",
+            "url": "https://crypto-economy.com/feed/"
+        },
+        {
+            "name": "Cryptonews",
+            "url": "https://cryptonews.com/rss/"
+        },
+        {
+            "name": "Cryptopolitan",
+            "url": "https://www.cryptopolitan.com/feed/"
+        },
+        {
+            "name": "Crypto-Potato",
+            "url": "https://cryptopotato.com/rss/"
+        },
+        {
+            "name": "cryptodnes",
+            "url": "https://cryptodnes.bg/feed/"
+        },
+        {
+            "name": "Dailycoin",
+            "url": "https://dailycoin.com/feed/"
+        },
+        {
+            "name": "Daily-Hodl",
             "url": "https://dailyhodl.com/feed/"
         },
         {
-            "name": "The Defiant",
+            "name": "Decrypt",
+            "url": "https://decrypt.co/feed"
+        },
+        {
+            "name": "NewsBTC",
+            "url": "https://www.newsbtc.com/feed/"
+        },
+        {
+            "name": "SF-Today",
+            "url": "https://sfctoday.com/feed/"
+        },
+        {
+            "name": "The-Defiant",
             "url": "https://thedifant.io/feed/"
         }
     ]
