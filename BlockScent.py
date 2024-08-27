@@ -3,8 +3,20 @@ import pandas as pd
 import feedparser
 import torch
 from transformers import BertTokenizer, BertForSequenceClassification
-import json
 from datetime import datetime
+from dotenv import load_dotenv
+import os
+import psycopg2
+
+# Load environment variables from .env file
+load_dotenv()
+
+# Database connection parameters
+DB_HOST = os.getenv("DB_HOST")
+DB_PORT = os.getenv("DB_PORT")
+DB_NAME = os.getenv("DB_NAME")
+DB_USER = os.getenv("DB_USER")
+DB_PASSWORD = os.getenv("DB_PASSWORD")
 
 # Configure logging
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -38,7 +50,7 @@ def parse_rss_feed(name, url):
                 except ValueError:
                     logging.error(f"Error parsing date: {published}")
                     continue
-                
+
             logging.debug(f"{name} - Article Found: {title}, Link: {link}")
             headlines.append([date, name, title, content, link])  # Store date, source, title, content, and link
         if headlines:
@@ -78,9 +90,19 @@ def save_to_csv(all_headlines, filename="crypto_news_sentiment2.csv"):
     # Log the first few rows for verification
     logging.debug(f"DataFrame head:\n{df.head()}")
 
-    # Save to CSV
-    df.to_csv(filename, index=False)
-    logging.info(f"Data saved to {filename}")
+    try:
+        # Read existing data if the file exists
+        if os.path.exists(filename):
+            existing_df = pd.read_csv(filename)
+            combined_df = pd.concat([existing_df, df]).drop_duplicates(subset=["Date", "Source", "Headline", "Link"], keep='last')
+        else:
+            combined_df = df
+
+        # Save to CSV
+        combined_df.to_csv(filename, index=False)
+        logging.info(f"Data saved to {filename}")
+    except Exception as e:
+        logging.error(f"Error saving to CSV: {e}")
 
 def filter_headlines_by_keyword(all_headlines, keyword, output_filename):
     # Filter headlines containing the keyword (case-insensitive)
@@ -95,6 +117,49 @@ def filter_headlines_by_keyword(all_headlines, keyword, output_filename):
         logging.info(f"Filtered data containing keyword '{keyword}' saved to {output_filename}")
     else:
         logging.warning(f"No headlines found containing the keyword '{keyword}'")
+
+def save_to_database(all_headlines):
+    try:
+        conn = psycopg2.connect(
+            dbname=DB_NAME,
+            user=DB_USER,
+            password=DB_PASSWORD,
+            host=DB_HOST,
+            port=DB_PORT
+        )
+        cur = conn.cursor()
+
+        # Create table if it doesn't exist
+        create_table_query = """
+        CREATE TABLE IF NOT EXISTS crypto_news (
+            id SERIAL PRIMARY KEY,
+            date DATE,
+            source VARCHAR(255),
+            headline TEXT,
+            sentiment VARCHAR(50),
+            sentiment_score NUMERIC,
+            label VARCHAR(50),
+            link TEXT,
+            UNIQUE (date, source, headline, link)
+        );
+        """
+        cur.execute(create_table_query)
+        conn.commit()
+
+        # Insert data into the table
+        insert_query = """
+        INSERT INTO crypto_news (date, source, headline, sentiment, sentiment_score, label, link)
+        VALUES (%s, %s, %s, %s, %s, %s, %s)
+        ON CONFLICT (date, source, headline, link) DO NOTHING;
+        """
+        cur.executemany(insert_query, all_headlines)
+        conn.commit()
+
+        logging.info(f"Data saved to the database.")
+        cur.close()
+        conn.close()
+    except Exception as e:
+        logging.error(f"Error saving to database: {e}")
 
 if __name__ == "__main__":
     all_headlines = []
@@ -113,6 +178,7 @@ if __name__ == "__main__":
 
     if all_headlines:
         save_to_csv(all_headlines)
+        save_to_database(all_headlines)
         # Filter and save headlines containing the keyword "DAO"
         filter_headlines_by_keyword(all_headlines, "DAO", "crypto_news_sentiment_DAO.csv")
     else:
