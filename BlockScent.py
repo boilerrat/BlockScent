@@ -126,7 +126,7 @@ def save_to_database(all_headlines):
     try:
         conn = psycopg2.connect(
             dbname=DB_NAME,
-            user=DB_USER, 
+            user=DB_USER,
             password=DB_PASSWORD,
             host=DB_HOST,
             port=DB_PORT
