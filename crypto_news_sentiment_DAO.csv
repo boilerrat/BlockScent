@@ -1,10 +1,13 @@
 Date,Source,Headline,Sentiment,Sentiment Score,Label,Link
-2024-08-27,ambcrypto,"Shiba Inu rallies ahead of DAO rollout, up 15% in 7 days – What’s next?",Negative,0.2506,3 stars,https://ambcrypto.com/shiba-inu-rallies-ahead-of-dao-rollout-up-15-in-7-days-whats-next/
-2024-08-23,Coindesk,MakerDAO to Offer Optional MKR Conversions for New Governance Token,Negative,0.3344,4 stars,https://www.coindesk.com/business/2024/08/23/makerdao-to-offer-optional-mkr-conversions-for-new-governance-token/?utm_medium=referral&utm_source=rss&utm_campaign=headlines
-2024-08-26,CoinSpeaker,Shiba Inu’s DAO Takes Shape: Leash Token Holders to Play Key Role,Negative,0.2645,4 stars,https://www.coinspeaker.com/shiba-inu-dao-leash-token/
+2024-08-27,Coindesk,"MakerDAO Is Now 'Sky' as $7B Crypto Lender Rolls Out New Stablecoin, Governance Token",Negative,0.3398,4 stars,https://www.coindesk.com/business/2024/08/27/makerdao-is-now-sky-as-7b-crypto-lender-rolls-out-new-stablecoin-governance-token/?utm_medium=referral&utm_source=rss&utm_campaign=headlines
+2024-08-27,CoinSpeaker,MakerDAO Rebrands to SKY Introducing New Stablecoin and Governance Token,Negative,0.2685,1 stars,https://www.coinspeaker.com/makerdao-rebrands-sky/
+2024-08-27,Crypto Briefing,"MakerDAO rebrands as Sky, reveals new stablecoin and governance token",Negative,0.2631,2 stars,https://cryptobriefing.com/makerdao-sky-rebranding-tokens/
 2024-08-25,Crypto Daily,"Crypto Weekly Roundup: Trump's DeFiant DeFi, MakerDAO Endgame, & More",Negative,0.3373,1 stars,https://cryptodaily.co.uk/2024/08/crypto-weekly-roundup-trumps-defiant-defi-makerdao-endgame-more
 2024-08-23,Crypto Daily,Endgame Overhaul: MakerDAO Rolls Out New Stablecoin and Governance Tokens,Negative,0.3757,4 stars,https://cryptodaily.co.uk/2024/08/endgame-overhaul-makerdao-rolls-out-new-stablecoin-and-governance-tokens
 2024-08-20,Crypto Daily,Mango DAO Moves to Settle SEC Charges with $223K Penalty Amid Regulatory Scrutiny,Negative,0.4191,1 stars,https://cryptodaily.co.uk/2024/08/mango-dao-moves-to-settle-sec-charges-with-223k-penalty-amid-regulatory-scrutiny
-2024-08-26,Crypto-Economy,Justin Sun to Donate $1M to DAO for Telegram Founder’s Release—Crypto Community Rallies,Negative,0.3292,1 stars,https://crypto-economy.com/justin-sun-to-donate-1m-to-dao-for-telegram-founders-release-crypto-community-rallies/
-Unknown,Cryptonews,Shiba Inu Memecoin Prepares to Roll Out DAO,Negative,0.2502,2 stars,https://cryptonews.com/news/shiba-inu-meme-coin-prepares-dao-launch.htm
-2024-08-26,Dailycoin,"Shiba Inu Fires Up SHIB DAO, Anchored in Dual Council Mode",Negative,0.289,1 stars,https://dailycoin.com/shiba-inu-fires-up-shib-dao-anchored-in-dual-council-mode/
+2024-08-27,Crypto-Economist,"Shiba Inu DAO News Fails To Spark Price Rally, Experts Bullish On This New Meme Coin",Negative,0.3084,2 stars,https://en.cryptonomist.ch/2024/08/27/shiba-inu-dao-news-fails-to-spark-price-rally-experts-bullish-on-this-new-meme-coin/
+2024-08-27,Crypto-Economy,MakerDAO Rebrands to Sky: New Tokens USDS and SKY Unveiled in Major Overhaul,Negative,0.2998,4 stars,https://crypto-economy.com/makerdao-rebrands-to-sky-new-tokens-usds-and-sky-unveiled-in-major-overhaul/
+2024-08-27,cryptodnes,MakerDAO се ребрандира и обяви въвеждането на обновените си токени,Negative,0.4623,1 stars,https://cryptodnes.bg/makerdao-rebrandira-obqvi-vuvejdaneto-obnovenite-tokeni/
+2024-08-27,Dailycoin,What’s Behind MakerDAO’s Rebrand to Sky?,Negative,0.3225,1 stars,https://dailycoin.com/whats-behind-makerdaos-rebrand-to-sky/
+2024-08-27,Decrypt,DeFi Protocol MakerDAO Rebrands to Sky Ahead of USDS Stablecoin Launch in September,Negative,0.3761,3 stars,https://decrypt.co/246601/defi-protocol-makerdao-rebrands-to-sky-ahead-of-usds-stablecoin-launch-in-september
+2024-08-27,zycrypto,Shiba Inu Unveils DAO Plans — How High Will SHIB Price Go?,Negative,0.2718,4 stars,https://zycrypto.com/shiba-inu-unveils-dao-plans-how-high-will-shib-price-go/
