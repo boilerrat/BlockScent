@@ -2,13 +2,13 @@
 
 ## Overview
 
-The Crypto News Sentiment Analyzer is a tool designed to provide sentiment analysis of cryptocurrency-related news headlines. By scraping headlines from various news sources via RSS feeds, analyzing them using BERT (Bidirectional Encoder Representations from Transformers), and storing the results in a CSV file, this tool helps users understand the overall mood of the cryptocurrency market as reflected in the news.
+The Crypto News Sentiment Analyzer is a tool designed to provide sentiment analysis of cryptocurrency-related news headlines. By scraping headlines from various news sources via RSS feeds, analyzing them using BERT (Bidirectional Encoder Representations from Transformers), and storing the results in a PostgreSQL database and/or a CSV file, this tool helps users understand the overall mood of the cryptocurrency market as reflected in the news.
 
 ## Features
 
 - **RSS Feed Parsing**: The tool pulls headlines and article content from multiple cryptocurrency news sources using RSS feeds.
 - **Sentiment Analysis**: Each headline is analyzed using the BERT model, which assigns a sentiment label (ranging from 1 to 5 stars) and a confidence score based on the content of the entire article.
-- **CSV Output**: The analyzed data is saved in a CSV file, including the publication date, headline, link, source, sentiment label, and sentiment score.
+- **CSV and Database Output**: The analyzed data is saved in a CSV file and stored in a PostgreSQL database, including the publication date, headline, link, source, sentiment label, and sentiment score.
 - **Data Aggregation**: The script calculates the average sentiment score across all headlines to provide an overall sentiment snapshot.
 - **Duplicate Handling**: The tool is designed to avoid counting the same story from the same source multiple times.
 
@@ -17,35 +17,109 @@ The Crypto News Sentiment Analyzer is a tool designed to provide sentiment analy
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/crypto-news-sentiment-analyzer.git
+git clone https://github.com/boilerrat/crypto-news-sentiment-analyzer.git
 cd crypto-news-sentiment-analyzer
 ```
 
 ### 2. Install Dependencies
 
+It is recommended to use a virtual environment for managing dependencies:
+
 ```bash
+python3 -m venv venv
+source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### 3. Configure the Sources
+### 3. Configure the Environment Variables
 
-- Modify the `sources.json` file located in the `components/` directory to include the RSS feeds of your preferred news sources.
-
-### 4. Run the Script
+Create a `.env` file in the project root directory based on the provided `.env.sample`:
 
 ```bash
-python analyze_sentiment.py
+cp .env.sample .env
 ```
+
+Edit the `.env` file to include your database connection details and any other environment variables:
+
+```plaintext
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=blockscent_db
+DB_USER=boilerrat
+DB_PASSWORD=your_password_here
+```
+
+### 4. Set Up the PostgreSQL Database
+
+If you haven't already set up your PostgreSQL database, follow these steps:
+
+#### a. Access PostgreSQL:
+
+```bash
+sudo -i -u postgres
+psql
+```
+
+#### b. Create the Database and User:
+
+```sql
+CREATE DATABASE blockscent_db;
+CREATE USER boilerrat WITH PASSWORD 'your_password_here';
+GRANT ALL PRIVILEGES ON DATABASE blockscent_db TO boilerrat;
+```
+
+Exit the PostgreSQL prompt:
+
+```sql
+\q
+```
+
+#### c. Verify Connection
+
+Make sure that your PostgreSQL service is running and that you can connect to the database using the credentials provided in your `.env` file.
+
+### 5. Run the Script
+
+Once everything is set up, you can run the script:
+
+```bash
+python BlockScent.py
+```
+
+This script will:
+
+1. Parse the RSS feeds specified in the `sources.json` file.
+2. Analyze the sentiment of each headline.
+3. Save the results to both a CSV file and the PostgreSQL database.
+
+### 6. Schedule Script Execution (Optional)
+
+To continuously update the sentiment analysis data, you can schedule the script to run periodically using `cron` on Linux or `Task Scheduler` on Windows.
 
 ## Usage
 
 ### Running the Script
 
-- Simply run the script using the command above. The script will parse the RSS feeds, analyze the sentiment of each headline, and save the results in a CSV file (`crypto_news_sentiment.csv`).
+Simply run the script using the command above. The script will parse the RSS feeds, analyze the sentiment of each headline, and save the results in both a CSV file (`crypto_news_sentiment2.csv`) and a PostgreSQL database.
 
-### Scheduling
+### Accessing the Data
 
-- To keep your sentiment analysis data up-to-date, you can schedule the script to run periodically using a task scheduler like `cron` on Linux or `Task Scheduler` on Windows.
+You can access the data directly from the PostgreSQL database using any SQL client, such as DBeaver or pgAdmin. Alternatively, you can review the data in the CSV file generated by the script.
+
+## `.env.sample` File
+
+Here’s a sample `.env.sample` file:
+
+```plaintext
+# Database connection details
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=blockscent_db
+DB_USER=boilerrat
+DB_PASSWORD=your_password_here
+```
+
+This file should be included in your repository, but make sure to exclude the actual `.env` file by listing it in your `.gitignore`.
 
 ## Explanation of Sentiment Analysis
 
@@ -96,7 +170,7 @@ To provide a more nuanced understanding of the sentiment:
 ### Mid-Term Goals
 
 1. **Database Integration**:
-   - Store results in a database (e.g., SQLite, PostgreSQL) for better data management and querying capabilities.
+   - Store results in a database (e.g., PostgreSQL) for better data management and querying capabilities.
 
 2. **Scheduled Runs**:
    - Set up the script to run on a schedule (e.g., daily) to continuously update the sentiment analysis data.
