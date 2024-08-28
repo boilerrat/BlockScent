@@ -42,11 +42,11 @@ cp .env.sample .env
 Edit the `.env` file to include your database connection details and any other environment variables:
 
 ```plaintext
-DB_HOST=localhost
-DB_PORT=5432
-DB_NAME=blockscent_db
-DB_USER=boilerrat
-DB_PASSWORD=your_password_here
+DB_HOST=your_database_host
+DB_PORT=your_database_port
+DB_NAME=your_database_name
+DB_USER=your_database_username
+DB_PASSWORD=your_database_password
 ```
 
 ### 4. Set Up the PostgreSQL Database
@@ -64,8 +64,8 @@ psql
 
 ```sql
 CREATE DATABASE blockscent_db;
-CREATE USER boilerrat WITH PASSWORD 'your_password_here';
-GRANT ALL PRIVILEGES ON DATABASE blockscent_db TO boilerrat;
+CREATE USER database_usr WITH PASSWORD 'your_password_here';
+GRANT ALL PRIVILEGES ON DATABASE blockscent_db TO database_usr;
 ```
 
 Exit the PostgreSQL prompt:
