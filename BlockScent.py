@@ -66,18 +66,21 @@ def parse_rss_feed(name, url):
 def analyze_sentiment(headlines):
     updated_headlines = []
     for headline in headlines:
-        content = headline[3]  # Content is at index 3
-        inputs = tokenizer(content, return_tensors='pt', truncation=True, padding=True)
-        outputs = model(**inputs)
-        sentiment_scores = torch.nn.functional.softmax(outputs.logits, dim=-1).detach().numpy()[0]
-        sentiment_label = sentiment_scores.argmax() + 1  # 1-5 stars
-        sentiment_score = round(float(sentiment_scores[sentiment_label - 1]), 4)  # Round score to 4 decimal places
-        sentiment = 'Positive' if sentiment_score > 0.5 else 'Negative'
-        logging.debug(f"Sentiment: {sentiment}, Score: {sentiment_score}, Label: {sentiment_label} stars")
-        
-        # Replace content with sentiment, and insert score and label
-        updated_headline = [headline[0], headline[1], headline[2], sentiment, sentiment_score, f"{sentiment_label} stars", headline[4]]
-        updated_headlines.append(updated_headline)
+        if headline[0] != "Unknown":  # Filter out rows where the date is "Unknown"
+            content = headline[3]  # Content is at index 3
+            inputs = tokenizer(content, return_tensors='pt', truncation=True, padding=True)
+            outputs = model(**inputs)
+            sentiment_scores = torch.nn.functional.softmax(outputs.logits, dim=-1).detach().numpy()[0]
+            sentiment_label = sentiment_scores.argmax() + 1  # 1-5 stars
+            sentiment_score = round(float(sentiment_scores[sentiment_label - 1]), 4)  # Round score to 4 decimal places
+            sentiment = 'Positive' if sentiment_score > 0.5 else 'Negative'
+            logging.debug(f"Sentiment: {sentiment}, Score: {sentiment_score}, Label: {sentiment_label} stars")
+            
+            # Replace content with sentiment, and insert score and label
+            updated_headline = [headline[0], headline[1], headline[2], sentiment, sentiment_score, f"{sentiment_label} stars", headline[4]]
+            updated_headlines.append(updated_headline)
+        else:
+            logging.warning(f"Skipped article with unknown date: {headline[2]}")
         
     return updated_headlines
 
