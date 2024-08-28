@@ -160,6 +160,7 @@ To provide a more nuanced understanding of the sentiment:
 
 1. **Expand Data Sources**:
    - Add more RSS feeds from additional cryptocurrency news websites to improve the breadth of sentiment analysis.
+   - Remove Junk
 
 2. **Enhanced Sentiment Scoring**:
    - Implement more nuanced sentiment analysis by considering contextual word meanings and additional NLP techniques.
@@ -169,12 +170,12 @@ To provide a more nuanced understanding of the sentiment:
 
 ### Mid-Term Goals
 
-1. **Database Integration**:
-   - Store results in a database (e.g., PostgreSQL) for better data management and querying capabilities.
-
-2. **Scheduled Runs**:
+1. **Scheduled Runs**:
    - Set up the script to run on a schedule (e.g., daily) to continuously update the sentiment analysis data.
 
+2. **Sentiment Trends & Visualizations**:
+   - Create visualizations of sentiment trends over time to better understand the market's mood.
+    
 ### Long-Term Goals
 
 1. **Web Interface**:
@@ -183,9 +184,6 @@ To provide a more nuanced understanding of the sentiment:
 2. **Real-Time Sentiment Analysis**:
    - Implement real-time sentiment analysis to provide up-to-the-minute sentiment insights.
 
-3. **Sentiment Trends & Visualizations**:
-   - Create visualizations of sentiment trends over time to better understand the market's mood.
-
-4. **VPS Deployment**:
+3. **VPS Deployment**:
    - Deploy the entire system on a Virtual Private Server (VPS) to ensure it's always running and accessible.
 
