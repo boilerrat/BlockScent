@@ -84,7 +84,7 @@ def analyze_sentiment(headlines):
         
     return updated_headlines
 
-def save_to_csv(all_headlines, filename="crypto_news_sentiment2.csv"):
+def save_to_csv(all_headlines, filename="csv/crypto_news_sentiment2.csv"):
     # Convert to DataFrame with the desired column order
     df = pd.DataFrame(all_headlines, columns=["Date", "Source", "Headline", "Sentiment", "Sentiment Score", "Label", "Link"])
     
@@ -184,7 +184,7 @@ if __name__ == "__main__":
         save_to_csv(all_headlines)
         save_to_database(all_headlines)
         # Filter and save headlines containing the keyword "DAO"
-        filter_headlines_by_keyword(all_headlines, "DAO", "crypto_news_sentiment_DAO.csv")
+        filter_headlines_by_keyword(all_headlines, "DAO", "csv/crypto_news_sentiment_DAO.csv")
     else:
         logging.warning("No headlines were scraped.")
 
