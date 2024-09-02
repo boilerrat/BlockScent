@@ -118,7 +118,7 @@ if __name__ == "__main__":
         merged_df = pd.merge(btc_df, eth_df, on='date', how='outer')
 
         # Save to PostgreSQL database
-        save_to_database(merged_df, 'crypto_market_data')
+        save_to_database(merged_df, 'crypto_prices')
 
         # Save to CSV
         save_to_csv(merged_df, '/media/boilerrat/Bobby/CryptoData/BlockScent/csv/crypto_market_data.csv')
