@@ -25,12 +25,20 @@
         "url": "https://en.bitcoinsistemi.com/feed/"
       },
       {
+        "name": "Bitdegree",
+        "url": "https://www.bitdegree.org/crypto/news/rss"
+      },
+      {
         "name": "Brave New Coin",
         "url": "https://bravenewcoin.com/feed"
       },
       {
         "name": "CoinBureau",
         "url": "https://coinbureau.com/feed/"
+      },
+      {
+        "name": "Coincodecap",
+        "url": "https://coincodecap.com/feed"
       },
       {
         "name": "CoinDesk",
@@ -49,12 +57,20 @@
         "url": "https://coinpedia.org/feed/"
       },
       {
+        "name": "Coin Radar",
+        "url": "https://coinradar.news/rss"
+      },
+      {
         "name": "CoinSpeaker",
         "url": "https://www.coinspeaker.com/news/feed/"
       },
       {
         "name": "CoinTelegraph",
         "url": "https://cointelegraph.com/rss"
+      },
+      {
+        "name": "Coin Tribune",
+        "url": "https://www.cointribune.com/en/feed/"
       },
       {
         "name": "Crypto Briefing",
@@ -105,6 +121,10 @@
         "url": "https://decrypt.co/feed"
       },
       {
+        "name": "FXStreet",
+        "url": "https://www.fxstreet.com/cryptocurrencies/news/feed"
+      },
+      {
         "name": "GlobalCryptoPress",
         "url": "https://www.globalcryptopress.com/feeds/posts/default?alt=rss"
       },
@@ -123,6 +143,14 @@
       {
         "name": "SF-Today",
         "url": "https://sfctoday.com/feed/"
+      },
+      {
+        "name": "The Crypto Basic",
+        "url": "https://thecryptobasic.com/feed/"
+      },
+      {
+        "name": "The Currency Analytics",
+        "url": "https://thecurrencyanalytics.com/feed"
       },
       {
         "name": "The-Defiant",
