@@ -19,9 +19,9 @@ DB_NAME = os.getenv("DB_NAME")
 DB_USER = os.getenv("DB_USER")
 DB_PASSWORD = os.getenv("DB_PASSWORD")
 
-def get_historical_prices(crypto_id, days):
+def get_historical_market_data(crypto_id, days):
     """
-    Fetches historical prices for a given cryptocurrency from CoinGecko API.
+    Fetches historical prices, market caps, and trading volumes for a given cryptocurrency from CoinGecko API.
     """
     url = f'https://api.coingecko.com/api/v3/coins/{crypto_id}/market_chart'
     params = {'vs_currency': 'usd', 'days': days, 'interval': 'daily'}
@@ -30,15 +30,19 @@ def get_historical_prices(crypto_id, days):
     if response.status_code == 200:
         data = response.json()
         prices = data['prices']
+        market_caps = data['market_caps']
+        volumes = data['total_volumes']
 
         # Convert to DataFrame
         df = pd.DataFrame(prices, columns=['timestamp', f'{crypto_id}_price'])
+        df[f'{crypto_id}_market_cap'] = pd.DataFrame(market_caps)[1]
+        df[f'{crypto_id}_volume'] = pd.DataFrame(volumes)[1]
         df['date'] = pd.to_datetime(df['timestamp'], unit='ms').dt.date
         df.drop('timestamp', axis=1, inplace=True)
-        logging.info(f"Successfully fetched {crypto_id} data.")
+        logging.info(f"Successfully fetched {crypto_id} market data.")
         return df
     else:
-        logging.error(f"Failed to fetch {crypto_id} data. Status code: {response.status_code}")
+        logging.error(f"Failed to fetch {crypto_id} market data. Status code: {response.status_code}")
         return pd.DataFrame()  # Return an empty DataFrame if the API call fails
 
 def save_to_database(df, table_name):
@@ -60,7 +64,11 @@ def save_to_database(df, table_name):
         CREATE TABLE IF NOT EXISTS {table_name} (
             date DATE PRIMARY KEY,
             btc_price NUMERIC,
-            eth_price NUMERIC
+            btc_market_cap NUMERIC,
+            btc_volume NUMERIC,
+            eth_price NUMERIC,
+            eth_market_cap NUMERIC,
+            eth_volume NUMERIC
         );
         """
         cur.execute(create_table_query)
@@ -69,11 +77,19 @@ def save_to_database(df, table_name):
         # Insert data into the table
         for _, row in df.iterrows():
             insert_query = f"""
-            INSERT INTO {table_name} (date, btc_price, eth_price)
-            VALUES (%s, %s, %s)
+            INSERT INTO {table_name} (date, btc_price, btc_market_cap, btc_volume, eth_price, eth_market_cap, eth_volume)
+            VALUES (%s, %s, %s, %s, %s, %s, %s)
             ON CONFLICT (date) DO NOTHING;
             """
-            cur.execute(insert_query, (row['date'], row.get('bitcoin_price', None), row.get('ethereum_price', None)))
+            cur.execute(insert_query, (
+                row['date'], 
+                row.get('bitcoin_price', None), 
+                row.get('bitcoin_market_cap', None), 
+                row.get('bitcoin_volume', None),
+                row.get('ethereum_price', None), 
+                row.get('ethereum_market_cap', None), 
+                row.get('ethereum_volume', None)
+            ))
         conn.commit()
 
         logging.info(f"Data saved to the {table_name} table.")
@@ -93,18 +109,18 @@ def save_to_csv(df, filename):
         logging.error(f"Error saving to CSV: {e}")
 
 if __name__ == "__main__":
-    # Fetch historical prices for Bitcoin (btc) and Ethereum (eth) for the past 30 days
-    btc_df = get_historical_prices('bitcoin', 30)
-    eth_df = get_historical_prices('ethereum', 30)
+    # Fetch historical market data for Bitcoin (btc) and Ethereum (eth) for the past 30 days
+    btc_df = get_historical_market_data('bitcoin', 30)
+    eth_df = get_historical_market_data('ethereum', 30)
 
     if not btc_df.empty and not eth_df.empty:
         # Merge the two DataFrames on the 'date' column
         merged_df = pd.merge(btc_df, eth_df, on='date', how='outer')
 
         # Save to PostgreSQL database
-        save_to_database(merged_df, 'crypto_prices')
+        save_to_database(merged_df, 'crypto_market_data')
 
         # Save to CSV
-        save_to_csv(merged_df, 'csv/crypto_prices.csv')
+        save_to_csv(merged_df, '/media/boilerrat/Bobby/CryptoData/BlockScent/csv/crypto_market_data.csv')
     else:
         logging.error("Failed to fetch data for Bitcoin or Ethereum.")
