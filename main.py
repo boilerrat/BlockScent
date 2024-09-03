@@ -8,12 +8,13 @@ import json
 import requests
 import os
 from newsapi import NewsApiClient
-from components.utils import save_to_csv, save_to_database, get_db_connection, filter_headlines_by_keyword
 from dotenv import load_dotenv
 from datetime import datetime, timedelta
 
 # Load environment variables
 load_dotenv()
+
+from components.utils import save_to_csv, save_to_database, get_db_connection, filter_headlines_by_keyword
 
 def display_working_animation():
     animation_art = """
@@ -185,25 +186,24 @@ def save_market_data_to_database(df, table_name):
         cur.execute(create_table_query)
         conn.commit()
 
-        # Replace NaN with None (interpreted as NULL in SQL)
-        df = df.where(pd.notnull(df), None)
-
         # Insert data into the table
         for _, row in df.iterrows():
-            insert_query = f"""
-            INSERT INTO {table_name} (date, btc_price, btc_market_cap, btc_volume, eth_price, eth_market_cap, eth_volume)
-            VALUES (%s, %s, %s, %s, %s, %s, %s)
-            ON CONFLICT (date) DO NOTHING;
-            """
-            cur.execute(insert_query, (
-                row['date'], 
-                row.get('btc_price', None), 
-                row.get('btc_market_cap', None), 
-                row.get('btc_volume', None),
-                row.get('eth_price', None), 
-                row.get('eth_market_cap', None), 
-                row.get('eth_volume', None)
-            ))
+            # Ensure that date and numeric fields are correctly formatted
+            if pd.notna(row['date']):
+                insert_query = f"""
+                INSERT INTO {table_name} (date, btc_price, btc_market_cap, btc_volume, eth_price, eth_market_cap, eth_volume)
+                VALUES (%s, %s, %s, %s, %s, %s, %s)
+                ON CONFLICT (date) DO NOTHING;
+                """
+                cur.execute(insert_query, (
+                    row['date'], 
+                    row.get('btc_price', None), 
+                    row.get('btc_market_cap', None), 
+                    row.get('btc_volume', None),
+                    row.get('eth_price', None), 
+                    row.get('eth_market_cap', None), 
+                    row.get('eth_volume', None)
+                ))
         conn.commit()
 
         logging.info(f"Market data saved to the {table_name} table.")
