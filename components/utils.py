@@ -1,5 +1,3 @@
-# utils.py
-
 import logging
 import os
 import pandas as pd
@@ -37,6 +35,7 @@ def get_db_connection():
 def save_to_csv(df, filename):
     """Save DataFrame to CSV."""
     try:
+        os.makedirs(os.path.dirname(filename), exist_ok=True)
         df.to_csv(filename, index=False)
         logging.info(f"Data saved to {filename}.")
     except Exception as e:
@@ -48,40 +47,31 @@ def save_to_database(df, table_name):
         conn = get_db_connection()
         if conn is None:
             return
-
         cur = conn.cursor()
 
-        # Create the table if it doesn't exist
-        create_table_query = f"""
+        # Ensure table exists with proper schema
+        cur.execute(f"""
         CREATE TABLE IF NOT EXISTS {table_name} (
-            date DATE PRIMARY KEY,
-            btc_price NUMERIC,
-            btc_market_cap NUMERIC,
-            btc_volume NUMERIC,
-            eth_price NUMERIC,
-            eth_market_cap NUMERIC,
-            eth_volume NUMERIC
+            id SERIAL PRIMARY KEY,
+            date DATE,
+            source VARCHAR(255),
+            headline TEXT,
+            sentiment VARCHAR(50),
+            sentiment_score NUMERIC,
+            label VARCHAR(50),
+            link TEXT,
+            UNIQUE (date, source, headline, link)
         );
-        """
-        cur.execute(create_table_query)
+        """)
         conn.commit()
 
-        # Insert data into the table
+        # Insert data, avoid duplication
         for _, row in df.iterrows():
-            insert_query = f"""
-            INSERT INTO {table_name} (date, btc_price, btc_market_cap, btc_volume, eth_price, eth_market_cap, eth_volume)
+            cur.execute(f"""
+            INSERT INTO {table_name} (date, source, headline, sentiment, sentiment_score, label, link)
             VALUES (%s, %s, %s, %s, %s, %s, %s)
-            ON CONFLICT (date) DO NOTHING;
-            """
-            cur.execute(insert_query, (
-                row['date'], 
-                row.get('btc_price', None), 
-                row.get('btc_market_cap', None), 
-                row.get('btc_volume', None),
-                row.get('eth_price', None), 
-                row.get('eth_market_cap', None), 
-                row.get('eth_volume', None)
-            ))
+            ON CONFLICT (date, source, headline, link) DO NOTHING;
+            """, tuple(row))
         conn.commit()
 
         logging.info(f"Data saved to the {table_name} table.")
@@ -90,5 +80,11 @@ def save_to_database(df, table_name):
     except Exception as e:
         logging.error(f"Error saving to database: {e}")
 
-# Use these functions in your main scripts:
-# from utils import save_to_csv, save_to_database
+def filter_headlines_by_keyword(df, keyword, output_filename):
+    """Filter headlines by keyword and save to CSV."""
+    filtered_df = df[df['Headline'].str.contains(keyword, case=False, na=False)]
+    if not filtered_df.empty:
+        save_to_csv(filtered_df, output_filename)
+        logging.info(f"Filtered data containing keyword '{keyword}' saved to {output_filename}")
+    else:
+        logging.warning(f"No headlines found containing the keyword '{keyword}'")
