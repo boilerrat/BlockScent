@@ -220,7 +220,7 @@ def main():
     df_headlines = fetch_and_process_sources()
 
     # Fetch additional news from NewsAPI
-    newsapi_headlines = fetch_newsapi_articles(query="Cryptocurrency OR Bitcoin OR Ethereum OR Crypto OR Blockchain OR XRP")
+    newsapi_headlines = fetch_newsapi_articles(query="Cryptocurrency OR Bitcoin OR Ethereum OR Crypto OR Blockchain OR NFT or Web3 OR Defi OR Decentralized Finance OR DeSci OR Refi OR DePin OR RWA")
     if newsapi_headlines:
         analyzed_newsapi_headlines = analyze_sentiment(newsapi_headlines)
         df_newsapi = pd.DataFrame(analyzed_newsapi_headlines, columns=["Date", "Source", "Headline", "Sentiment", "Sentiment Score", "Label", "Link"])
