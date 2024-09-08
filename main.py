@@ -111,8 +111,23 @@ def fetch_newsapi_articles(query=None, from_date=None, to_date=None, language='e
         logging.error(f"Failed to fetch NewsAPI data: {e}")
         return []
 
+def classify_sentiment(sentiment_score, stars):
+    """Classify sentiment based on weighted sentiment score."""
+    # Calculate the weighted sentiment score
+    weighted_score = sentiment_score * (stars / 5.0)
+    
+    # Classify based on thresholds
+    if weighted_score > 0.6:
+        sentiment = "Positive"
+    elif weighted_score < 0.4:
+        sentiment = "Negative"
+    else:
+        sentiment = "Neutral"
+    
+    return sentiment, weighted_score
+
 def analyze_sentiment(headlines):
-    """Analyzes sentiment using BERT."""
+    """Analyzes sentiment using BERT and classifies it."""
     updated_headlines = []
     for headline in headlines:
         content = headline[3]
@@ -121,9 +136,22 @@ def analyze_sentiment(headlines):
         sentiment_scores = torch.nn.functional.softmax(outputs.logits, dim=-1).detach().numpy()[0]
         sentiment_label = sentiment_scores.argmax() + 1
         sentiment_score = round(float(sentiment_scores[sentiment_label - 1]), 4)
-        sentiment = 'Positive' if sentiment_score > 0.5 else 'Negative'
-        updated_headline = [headline[0], headline[1], headline[2], sentiment, sentiment_score, f"{sentiment_label} stars", headline[4]]
+        stars = sentiment_label  # Use the sentiment label as the star rating (1 to 5)
+        
+        # Classify sentiment based on the new logic
+        sentiment, weighted_score = classify_sentiment(sentiment_score, stars)
+        
+        updated_headline = [
+            headline[0],  # Date
+            headline[1],  # Source
+            headline[2],  # Headline
+            sentiment,    # Sentiment (Positive, Negative, Neutral)
+            weighted_score,  # Weighted Sentiment Score
+            f"{sentiment_label} stars",  # Label (Stars)
+            headline[4]   # Link
+        ]
         updated_headlines.append(updated_headline)
+    
     return updated_headlines
 
 def fetch_and_process_sources(sources_file='components/sources.json'):
